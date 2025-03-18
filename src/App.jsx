@@ -14,10 +14,11 @@ const App = () => {
       </h1>
       <Button title="Click Me" variant="dark" />
       <br />
+
       <InputField
         label="Email"
         placeholder=""
-        type="email"
+        type="password"
         variant="regular"
         helpText="Error"
       />
