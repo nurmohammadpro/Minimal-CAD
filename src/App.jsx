@@ -2,6 +2,10 @@ import Button from "./components/ui/Button";
 import InputField from "./components/ui/InputField";
 import TextArea from "./components/ui/TextArea";
 import PopOver from "./components/ui/PopOver";
+import AcceptDecline from "./components/ui/dialogs/AcceptDecline";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import AcceptDeclineVertical from "./components/ui/dialogs/AcceptDeclineVertical";
+import AnnouncementIcon from "@mui/icons-material/Announcement";
 
 const App = () => {
   return (
@@ -39,6 +43,22 @@ const App = () => {
         popOverHeader="Header"
         popOverDescription="Description"
         position="rightMiddle"
+      />
+
+      <br />
+
+      <AcceptDecline
+        title="Something we'd like to propose"
+        description="In today's net-savvy world it has become common for any business to have a website which the use mostly"
+        icon={NotificationsActiveIcon}
+      />
+
+      <br />
+
+      <AcceptDeclineVertical
+        title="Advertising"
+        description="n today's net-savvy world it has become common for any business to have a website which the use mostly"
+        icon={<AnnouncementIcon style={{ fontSize: "48px", color: "black" }} />}
       />
     </div>
   );
