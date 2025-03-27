@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Manrope", "sans-serif";
+
+  --color-primary: oklch(64.04% 0.1427 160.89);
+  --color-secondary: oklch(56.78% 0.2714 296.89);
+  --color-info: oklch(72.4% 0.1285 216.07);
+  --color-success: oklch(72.04% 0.1897 149.82);
+  --color-warning: oklch(80.34% 0.1704 73.79);
+  --color-error: oklch(68.02% 0.2104 34.08);
+
+  --color-light-50: oklch(0.985 0.002 247.839);
+  --color-light-100: oklch(0.967 0.003 264.542);
+  --color-light-200: oklch(0.928 0.006 264.531);
+  --color-light-400: oklch(0.707 0.022 261.325);
+  --color-light-600: oklch(0.446 0.03 256.802);
+
+  --color-dark-800: oklch(0.278 0.033 256.848);
+  --color-dark-950: oklch(0.13 0.028 261.692);
+
+  --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+  /* ... */
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.3s ease-out forwards;
+}
