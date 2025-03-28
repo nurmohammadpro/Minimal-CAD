@@ -9,41 +9,53 @@ import UserAvatar from "../assets/user-avatar.png";
 import { Link } from "react-router-dom";
 import SearchPopUp from "./SearchPopUp";
 import UserProfileMenu from "./user/UserProfileMenu";
-import axios from "axios";
+import api from "../api/axios";
 
 const Navbar = () => {
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/users/check-auth",
-          {
-            withCredentials: true,
-          }
-        );
-        setIsLoggedIn(response.data.isAuthenticated);
+        // First check if user is authenticated
+        const authResponse = await api.get("/users/check-auth", {
+          withCredentials: true,
+        });
 
-        if (response.data.isAuthenticated) {
-          // You would fetch user data here
-          // For now, we'll use placeholder data
-          setUserData({
-            name: "Jaydon Frankie",
-            email: "demo@minimals.cc",
-            avatar: UserAvatar,
-          });
+        setIsLoggedIn(authResponse.data.isAuthenticated);
+
+        if (authResponse.data.isAuthenticated) {
+          // If authenticated, fetch user profile data
+          // Note: You'll need to create this endpoint on your backend
+          try {
+            const userResponse = await api.get("/users/profile", {
+              withCredentials: true,
+            });
+
+            setUserData(userResponse.data);
+          } catch (profileError) {
+            console.error("Error fetching user profile:", profileError);
+            // Fallback to basic authenticated state without profile data
+            setUserData({
+              firstName: "User",
+              email: "user@example.com",
+              avatar: UserAvatar,
+            });
+          }
         }
       } catch (error) {
         console.error("Auth check failed:", error);
         setIsLoggedIn(false);
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkAuthStatus();
+    fetchUserData();
   }, []);
 
   const handleSearchClick = () => {

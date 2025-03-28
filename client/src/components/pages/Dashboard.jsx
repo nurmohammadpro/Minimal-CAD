@@ -60,24 +60,16 @@ const Dashboard = () => {
         <div className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <div className="lg:col-span-2">
-                <WelcomeSection />
-              </div>
-              <div>
-                <FeaturedApp />
-              </div>
+              <div className="lg:col-span-2">{/* <WelcomeSection /> */}</div>
+              <div>{/* <FeaturedApp /> */}</div>
             </div>
 
-            <StatsCards />
-            <ChartsSection />
+            {/* <StatsCards />
+            <ChartsSection /> */}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <InvoiceTable />
-              </div>
-              <div>
-                <RelatedApps />
-              </div>
+              <div className="lg:col-span-2">{/* <InvoiceTable /> */}</div>
+              <div>{/* <RelatedApps /> */}</div>
             </div>
           </div>
         </div>

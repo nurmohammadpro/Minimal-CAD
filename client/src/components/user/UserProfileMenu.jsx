@@ -11,7 +11,7 @@ import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
+import api from "../../api/axios";
 
 const UserProfileMenu = ({ onClose, userData }) => {
   const navigate = useNavigate();
@@ -20,13 +20,7 @@ const UserProfileMenu = ({ onClose, userData }) => {
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await axios.post(
-        "http://localhost:5000/api/users/signout",
-        {},
-        { withCredentials: true }
-      );
-      // Clear user data from localStorage
-      localStorage.removeItem("userData");
+      await api.post("/users/signout", {}, { withCredentials: true });
       navigate("/signin");
     } catch (error) {
       console.error("Logout error:", error);
@@ -57,17 +51,23 @@ const UserProfileMenu = ({ onClose, userData }) => {
     },
   ];
 
-  // Default user data if not provided
+  // Use userData if provided, otherwise use default values
   const user = userData || {
-    name: "Jaydon Frankie",
-    email: "demo@minimals.cc",
-    avatar:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Snapshot_2025-03-28_00-33-16-GGgtkMZaHksO4Oof2TaxsjaXcNyZRZ.png",
+    firstName: "User",
+    lastName: "",
+    email: "user@example.com",
+    avatar: "/placeholder.svg?height=80&width=80",
   };
 
+  // Construct full name from firstName and lastName
+  const fullName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.firstName || "User";
+
   return (
-    <div className="fixed inset-0 bg-black/10 z-50 flex justify-end">
-      <div className="w-80 h-full bg-white overflow-y-auto animate-slide-left">
+    <div className="fixed inset-0 bg-black/20 z-50 flex justify-end">
+      <div className="w-80 h-full flex flex-col bg-white overflow-y-auto animate-slide-left">
         <div className="p-4 flex justify-between items-center">
           <div></div> {/* Empty div for spacing */}
           <button
@@ -89,11 +89,11 @@ const UserProfileMenu = ({ onClose, userData }) => {
             </div>
             <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-green-400 border-r-green-400"></div>
           </div>
-          <h3 className="mt-3 text-lg font-semibold">{user.name}</h3>
+          <h3 className="mt-3 text-lg font-semibold">{fullName}</h3>
           <p className="text-gray-500 text-sm">{user.email}</p>
 
           <div className="flex mt-4 space-x-2">
-            {[1, 2, 3].map((_, index) => (
+            {/* {[1, 2, 3].map((_, index) => (
               <div
                 key={index}
                 className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden"
@@ -104,7 +104,7 @@ const UserProfileMenu = ({ onClose, userData }) => {
                   className="w-full h-full object-cover"
                 />
               </div>
-            ))}
+            ))} */}
             <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
               <AddIcon fontSize="small" />
             </button>
@@ -133,7 +133,7 @@ const UserProfileMenu = ({ onClose, userData }) => {
           </ul>
         </div>
 
-        <div className="px-4 py-4">
+        {/* <div className="px-4 py-4">
           <div className="bg-gradient-to-r from-pink-400 to-purple-500 rounded-xl p-4 text-white">
             <div className="flex items-center mb-2">
               <h4 className="text-xl font-bold">35% OFF</h4>
@@ -144,7 +144,7 @@ const UserProfileMenu = ({ onClose, userData }) => {
               <RocketLaunchIcon fontSize="small" className="ml-1" />
             </button>
           </div>
-        </div>
+        </div> */}
 
         <div className="px-4 py-4 mt-auto">
           <button

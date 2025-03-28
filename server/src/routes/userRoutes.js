@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import User from "../models/User.js"; // Changed from "../src/models/User.js" to "../models/User.js"
 import { body, validationResult } from "express-validator";
 
 const router = express.Router();
@@ -20,16 +20,7 @@ router.post("/signin", async (req, res) => {
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000,
     });
-
-    // Return user data without the password
-    const userData = {
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
-
-    res.send({ user: userData, token });
+    res.send({ user, token });
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -88,7 +79,35 @@ router.post(
   }
 );
 
-// // Check auth
+// Get user profile
+router.get("/profile", async (req, res) => {
+  try {
+    // Get token from cookies
+    const token = req.cookies.jwt;
+
+    if (!token) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find user by ID
+    const user = await User.findById(decoded.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return user data
+    res.json(user);
+  } catch (error) {
+    console.error("Profile fetch error:", error);
+    res.status(401).json({ error: "Not authorized" });
+  }
+});
+
+// Check auth
 router.get("/check-auth", (req, res) => {
   const token = req.cookies.jwt;
   if (!token) {
